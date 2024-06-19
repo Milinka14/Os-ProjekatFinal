@@ -26,7 +26,8 @@ enum Codes {
     SEM_TRYWAIT = 0x26,
     TIME_SLEEP = 0x31,
     GETC = 0x41,
-    PUTC = 0x42
+    PUTC = 0x42,
+    Random = 0x1231241
 };
 
 void *mem_alloc(size_t size);
