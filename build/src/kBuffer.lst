@@ -1,0 +1,1252 @@
+GAS LISTING /tmp/ccPAOpUK.s 			page 1
+
+
+   1              		.file	"kBuffer.cpp"
+   2              		.option pic
+   3              		.option norelax
+   4              		.text
+   5              	.Ltext0:
+   6              		.align	2
+   7              		.globl	_ZN7kBufferC2Ei
+   9              	_ZN7kBufferC2Ei:
+  10              	.LFB58:
+  11              		.file 1 "src/kBuffer.cpp"
+   1:src/kBuffer.cpp **** //
+   2:src/kBuffer.cpp **** // Created by os on 5/22/24.
+   3:src/kBuffer.cpp **** //
+   4:src/kBuffer.cpp **** // iskoriscen buffer iz test primjera
+   5:src/kBuffer.cpp **** 
+   6:src/kBuffer.cpp **** #include "../h/kBuffer.hpp"
+   7:src/kBuffer.cpp **** 
+   8:src/kBuffer.cpp **** kBuffer::kBuffer(int _cap) : cap(_cap + 1), head(0), tail(0) {
+  12              		.loc 1 8 1
+  13              		.cfi_startproc
+  14              	.LVL0:
+  15 0000 130101FE 		addi	sp,sp,-32
+  16              		.cfi_def_cfa_offset 32
+  17 0004 233C1100 		sd	ra,24(sp)
+  18 0008 23388100 		sd	s0,16(sp)
+  19 000c 23349100 		sd	s1,8(sp)
+  20 0010 23302101 		sd	s2,0(sp)
+  21              		.cfi_offset 1, -8
+  22              		.cfi_offset 8, -16
+  23              		.cfi_offset 9, -24
+  24              		.cfi_offset 18, -32
+  25 0014 13040102 		addi	s0,sp,32
+  26              		.cfi_def_cfa 8, 0
+  27 0018 93040500 		mv	s1,a0
+  28 001c 13890500 		mv	s2,a1
+  29              	.LBB39:
+  30              		.loc 1 8 39 is_stmt 0
+  31 0020 9B871500 		addiw	a5,a1,1
+  32 0024 1B850700 		sext.w	a0,a5
+  33              	.LVL1:
+  34              		.loc 1 8 60
+  35 0028 23A0F400 		sw	a5,0(s1)
+  36 002c 23A80400 		sw	zero,16(s1)
+  37 0030 23AA0400 		sw	zero,20(s1)
+   9:src/kBuffer.cpp ****     buffer = (char *) Allocator::_malloc(sizeof(int) * cap);
+  38              		.loc 1 9 5 is_stmt 1
+  39              		.loc 1 9 41 is_stmt 0
+  40 0034 13152500 		slli	a0,a0,2
+  41 0038 97000000 		call	_ZN9Allocator7_mallocEm@plt
+  41      E7800000 
+  42              	.LVL2:
+  43              		.loc 1 9 12
+  44 0040 23B4A400 		sd	a0,8(s1)
+  10:src/kBuffer.cpp ****     itemAvailable = new kSemaphore(0);
+  45              		.loc 1 10 5 is_stmt 1
+  46              	.LVL3:
+  47              	.LBB40:
+GAS LISTING /tmp/ccPAOpUK.s 			page 2
+
+
+  48              	.LBB41:
+  49              		.file 2 "src/../h/../h/../h/sem.hpp"
+   1:src/../h/../h/../h/sem.hpp **** //
+   2:src/../h/../h/../h/sem.hpp **** // Created by os on 5/19/24.
+   3:src/../h/../h/../h/sem.hpp **** //
+   4:src/../h/../h/../h/sem.hpp **** 
+   5:src/../h/../h/../h/sem.hpp **** #ifndef PROJECT_BASE_SEM_HPP
+   6:src/../h/../h/../h/sem.hpp **** #define PROJECT_BASE_SEM_HPP
+   7:src/../h/../h/../h/sem.hpp **** 
+   8:src/../h/../h/../h/sem.hpp **** #include "../h/tcb.hpp"
+   9:src/../h/../h/../h/sem.hpp **** #include "../h/list.hpp"
+  10:src/../h/../h/../h/sem.hpp **** #include "../h/syscall_c.h"
+  11:src/../h/../h/../h/sem.hpp **** #include "tipovi.hpp"
+  12:src/../h/../h/../h/sem.hpp **** #include "Allocator.hpp"
+  13:src/../h/../h/../h/sem.hpp **** 
+  14:src/../h/../h/../h/sem.hpp **** class kSemaphore {
+  15:src/../h/../h/../h/sem.hpp **** public:
+  16:src/../h/../h/../h/sem.hpp ****     kSemaphore(uint64 init = 1): val(init) {}
+  17:src/../h/../h/../h/sem.hpp **** 
+  18:src/../h/../h/../h/sem.hpp ****     int closeSem();
+  19:src/../h/../h/../h/sem.hpp ****     int tryWait();
+  20:src/../h/../h/../h/sem.hpp ****     int timedWait(time_t time);
+  21:src/../h/../h/../h/sem.hpp **** 
+  22:src/../h/../h/../h/sem.hpp ****     int wait();
+  23:src/../h/../h/../h/sem.hpp ****     int signal();
+  24:src/../h/../h/../h/sem.hpp **** 
+  25:src/../h/../h/../h/sem.hpp ****     int value() const{return val;}
+  26:src/../h/../h/../h/sem.hpp **** 
+  27:src/../h/../h/../h/sem.hpp ****     static int openSem(sem_t *handle, unsigned init);
+  28:src/../h/../h/../h/sem.hpp **** 
+  29:src/../h/../h/../h/sem.hpp ****     friend class Riscv;
+  30:src/../h/../h/../h/sem.hpp **** 
+  31:src/../h/../h/../h/sem.hpp ****     static List<TCB> blockedTimedWait;
+  32:src/../h/../h/../h/sem.hpp **** 
+  33:src/../h/../h/../h/sem.hpp ****     void* operator new(size_t size) {
+  34:src/../h/../h/../h/sem.hpp ****         return Allocator::_malloc(size);
+  50              		.loc 2 34 9
+  51              		.loc 2 34 34 is_stmt 0
+  52 0044 13050002 		li	a0,32
+  53 0048 97000000 		call	_ZN9Allocator7_mallocEm@plt
+  53      E7800000 
+  54              	.LVL4:
+  55              	.LBE41:
+  56              	.LBE40:
+  57              	.LBB42:
+  58              	.LBB43:
+  16:src/../h/../h/../h/sem.hpp **** 
+  59              		.loc 2 16 42
+  60 0050 23200500 		sw	zero,0(a0)
+  61              	.LVL5:
+  62              	.LBB44:
+  63              	.LBB45:
+  64              		.file 3 "src/../h/../h/../h/../h/list.hpp"
+   1:src/../h/../h/../h/../h/list.hpp **** //
+   2:src/../h/../h/../h/../h/list.hpp **** // Created by os on 5/16/24.
+   3:src/../h/../h/../h/../h/list.hpp **** //
+   4:src/../h/../h/../h/../h/list.hpp **** 
+GAS LISTING /tmp/ccPAOpUK.s 			page 3
+
+
+   5:src/../h/../h/../h/../h/list.hpp **** #ifndef PROJECT_BASE_LIST_HPP
+   6:src/../h/../h/../h/../h/list.hpp **** #define PROJECT_BASE_LIST_HPP
+   7:src/../h/../h/../h/../h/list.hpp **** 
+   8:src/../h/../h/../h/../h/list.hpp **** #include "../h/Allocator.hpp"
+   9:src/../h/../h/../h/../h/list.hpp **** //Lista preuzeta sa teamsa
+  10:src/../h/../h/../h/../h/list.hpp **** 
+  11:src/../h/../h/../h/../h/list.hpp **** template<typename T>
+  12:src/../h/../h/../h/../h/list.hpp **** class List
+  13:src/../h/../h/../h/../h/list.hpp **** {
+  14:src/../h/../h/../h/../h/list.hpp **** private:
+  15:src/../h/../h/../h/../h/list.hpp ****     struct Elem
+  16:src/../h/../h/../h/../h/list.hpp ****     {
+  17:src/../h/../h/../h/../h/list.hpp ****         T *data;
+  18:src/../h/../h/../h/../h/list.hpp ****         Elem *next;
+  19:src/../h/../h/../h/../h/list.hpp **** 
+  20:src/../h/../h/../h/../h/list.hpp ****         Elem(T *data, Elem *next) : data(data), next(next) {}
+  21:src/../h/../h/../h/../h/list.hpp **** 
+  22:src/../h/../h/../h/../h/list.hpp ****         void* operator new(size_t size) {
+  23:src/../h/../h/../h/../h/list.hpp ****             return Allocator::_malloc(size);
+  24:src/../h/../h/../h/../h/list.hpp ****         }
+  25:src/../h/../h/../h/../h/list.hpp **** 
+  26:src/../h/../h/../h/../h/list.hpp ****         void operator delete(void* ptr) {
+  27:src/../h/../h/../h/../h/list.hpp ****             Allocator::_mem_free(ptr);
+  28:src/../h/../h/../h/../h/list.hpp ****         }
+  29:src/../h/../h/../h/../h/list.hpp **** 
+  30:src/../h/../h/../h/../h/list.hpp ****         void* operator new[](size_t size) {
+  31:src/../h/../h/../h/../h/list.hpp ****             return Allocator::_malloc(size);
+  32:src/../h/../h/../h/../h/list.hpp ****         }
+  33:src/../h/../h/../h/../h/list.hpp **** 
+  34:src/../h/../h/../h/../h/list.hpp ****         void operator delete[](void* ptr) {
+  35:src/../h/../h/../h/../h/list.hpp ****             Allocator::_mem_free(ptr);
+  36:src/../h/../h/../h/../h/list.hpp ****         }
+  37:src/../h/../h/../h/../h/list.hpp ****     };
+  38:src/../h/../h/../h/../h/list.hpp **** 
+  39:src/../h/../h/../h/../h/list.hpp ****     Elem *head, *tail;
+  40:src/../h/../h/../h/../h/list.hpp **** 
+  41:src/../h/../h/../h/../h/list.hpp **** public:
+  42:src/../h/../h/../h/../h/list.hpp ****     friend class TCB;
+  43:src/../h/../h/../h/../h/list.hpp ****     friend class Riscv;
+  44:src/../h/../h/../h/../h/list.hpp ****     friend class kSemaphore;
+  45:src/../h/../h/../h/../h/list.hpp **** 
+  46:src/../h/../h/../h/../h/list.hpp ****     List() : head(0), tail(0) {}
+  65              		.loc 3 46 29
+  66 0054 23340500 		sd	zero,8(a0)
+  67 0058 23380500 		sd	zero,16(a0)
+  68              	.LVL6:
+  69              	.LBE45:
+  70              	.LBE44:
+  16:src/../h/../h/../h/sem.hpp **** 
+  71              		.loc 2 16 42
+  72 005c 230C0500 		sb	zero,24(a0)
+  73              	.LVL7:
+  74              	.LBE43:
+  75              	.LBE42:
+  76              		.loc 1 10 19
+  77 0060 23B0A402 		sd	a0,32(s1)
+  11:src/kBuffer.cpp ****     spaceAvailable = new kSemaphore(_cap);
+GAS LISTING /tmp/ccPAOpUK.s 			page 4
+
+
+  78              		.loc 1 11 5 is_stmt 1
+  79              	.LVL8:
+  80              	.LBB46:
+  81              	.LBB47:
+  82              		.loc 2 34 9
+  83              		.loc 2 34 34 is_stmt 0
+  84 0064 13050002 		li	a0,32
+  85 0068 97000000 		call	_ZN9Allocator7_mallocEm@plt
+  85      E7800000 
+  86              	.LVL9:
+  87              	.LBE47:
+  88              	.LBE46:
+  89              	.LBB48:
+  90              	.LBB49:
+  16:src/../h/../h/../h/sem.hpp **** 
+  91              		.loc 2 16 42
+  92 0070 23202501 		sw	s2,0(a0)
+  93              	.LVL10:
+  94              	.LBB50:
+  95              	.LBB51:
+  96              		.loc 3 46 29
+  97 0074 23340500 		sd	zero,8(a0)
+  98 0078 23380500 		sd	zero,16(a0)
+  99              	.LVL11:
+ 100              	.LBE51:
+ 101              	.LBE50:
+  16:src/../h/../h/../h/sem.hpp **** 
+ 102              		.loc 2 16 42
+ 103 007c 230C0500 		sb	zero,24(a0)
+ 104              	.LVL12:
+ 105              	.LBE49:
+ 106              	.LBE48:
+ 107              		.loc 1 11 20
+ 108 0080 23BCA400 		sd	a0,24(s1)
+  12:src/kBuffer.cpp ****     mutexHead = new kSemaphore(1);
+ 109              		.loc 1 12 5 is_stmt 1
+ 110              	.LVL13:
+ 111              	.LBB52:
+ 112              	.LBB53:
+ 113              		.loc 2 34 9
+ 114              		.loc 2 34 34 is_stmt 0
+ 115 0084 13050002 		li	a0,32
+ 116 0088 97000000 		call	_ZN9Allocator7_mallocEm@plt
+ 116      E7800000 
+ 117              	.LVL14:
+ 118              	.LBE53:
+ 119              	.LBE52:
+ 120              	.LBB54:
+ 121              	.LBB55:
+  16:src/../h/../h/../h/sem.hpp **** 
+ 122              		.loc 2 16 42
+ 123 0090 13091000 		li	s2,1
+ 124 0094 23202501 		sw	s2,0(a0)
+ 125              	.LVL15:
+ 126              	.LBB56:
+ 127              	.LBB57:
+ 128              		.loc 3 46 29
+GAS LISTING /tmp/ccPAOpUK.s 			page 5
+
+
+ 129 0098 23340500 		sd	zero,8(a0)
+ 130 009c 23380500 		sd	zero,16(a0)
+ 131              	.LVL16:
+ 132              	.LBE57:
+ 133              	.LBE56:
+  16:src/../h/../h/../h/sem.hpp **** 
+ 134              		.loc 2 16 42
+ 135 00a0 230C0500 		sb	zero,24(a0)
+ 136              	.LVL17:
+ 137              	.LBE55:
+ 138              	.LBE54:
+ 139              		.loc 1 12 15
+ 140 00a4 23B4A402 		sd	a0,40(s1)
+  13:src/kBuffer.cpp ****     mutexTail = new kSemaphore(1);
+ 141              		.loc 1 13 5 is_stmt 1
+ 142              	.LVL18:
+ 143              	.LBB58:
+ 144              	.LBB59:
+ 145              		.loc 2 34 9
+ 146              		.loc 2 34 34 is_stmt 0
+ 147 00a8 13050002 		li	a0,32
+ 148 00ac 97000000 		call	_ZN9Allocator7_mallocEm@plt
+ 148      E7800000 
+ 149              	.LVL19:
+ 150              	.LBE59:
+ 151              	.LBE58:
+ 152              	.LBB60:
+ 153              	.LBB61:
+  16:src/../h/../h/../h/sem.hpp **** 
+ 154              		.loc 2 16 42
+ 155 00b4 23202501 		sw	s2,0(a0)
+ 156              	.LVL20:
+ 157              	.LBB62:
+ 158              	.LBB63:
+ 159              		.loc 3 46 29
+ 160 00b8 23340500 		sd	zero,8(a0)
+ 161 00bc 23380500 		sd	zero,16(a0)
+ 162              	.LVL21:
+ 163              	.LBE63:
+ 164              	.LBE62:
+  16:src/../h/../h/../h/sem.hpp **** 
+ 165              		.loc 2 16 42
+ 166 00c0 230C0500 		sb	zero,24(a0)
+ 167              	.LVL22:
+ 168              	.LBE61:
+ 169              	.LBE60:
+ 170              		.loc 1 13 15
+ 171 00c4 23B8A402 		sd	a0,48(s1)
+ 172              	.LBE39:
+  14:src/kBuffer.cpp **** }
+ 173              		.loc 1 14 1
+ 174 00c8 83308101 		ld	ra,24(sp)
+ 175              		.cfi_restore 1
+ 176 00cc 03340101 		ld	s0,16(sp)
+ 177              		.cfi_restore 8
+ 178              		.cfi_def_cfa 2, 32
+ 179 00d0 83348100 		ld	s1,8(sp)
+GAS LISTING /tmp/ccPAOpUK.s 			page 6
+
+
+ 180              		.cfi_restore 9
+ 181              	.LVL23:
+ 182 00d4 03390100 		ld	s2,0(sp)
+ 183              		.cfi_restore 18
+ 184 00d8 13010102 		addi	sp,sp,32
+ 185              		.cfi_def_cfa_offset 0
+ 186 00dc 67800000 		jr	ra
+ 187              		.cfi_endproc
+ 188              	.LFE58:
+ 190              		.globl	_ZN7kBufferC1Ei
+ 191              		.set	_ZN7kBufferC1Ei,_ZN7kBufferC2Ei
+ 192              		.align	2
+ 193              		.globl	_ZN7kBufferD2Ev
+ 195              	_ZN7kBufferD2Ev:
+ 196              	.LFB61:
+  15:src/kBuffer.cpp **** 
+  16:src/kBuffer.cpp **** kBuffer::~kBuffer() {
+ 197              		.loc 1 16 1 is_stmt 1
+ 198              		.cfi_startproc
+ 199              		.cfi_personality 0x9b,DW.ref.__gxx_personality_v0
+ 200              		.cfi_lsda 0x1b,.LLSDA61
+ 201              	.LVL24:
+ 202 00e0 130101FE 		addi	sp,sp,-32
+ 203              		.cfi_def_cfa_offset 32
+ 204 00e4 233C1100 		sd	ra,24(sp)
+ 205 00e8 23388100 		sd	s0,16(sp)
+ 206 00ec 23349100 		sd	s1,8(sp)
+ 207              		.cfi_offset 1, -8
+ 208              		.cfi_offset 8, -16
+ 209              		.cfi_offset 9, -24
+ 210 00f0 13040102 		addi	s0,sp,32
+ 211              		.cfi_def_cfa 8, 0
+ 212 00f4 93040500 		mv	s1,a0
+ 213              	.LBB64:
+  17:src/kBuffer.cpp ****     Allocator::_mem_free(buffer);
+ 214              		.loc 1 17 5
+ 215              		.loc 1 17 25 is_stmt 0
+ 216 00f8 03358500 		ld	a0,8(a0)
+ 217              	.LVL25:
+ 218 00fc 97000000 		call	_ZN9Allocator9_mem_freeEPv@plt
+ 218      E7800000 
+ 219              	.LVL26:
+  18:src/kBuffer.cpp ****     itemAvailable->closeSem();
+ 220              		.loc 1 18 5 is_stmt 1
+ 221              		.loc 1 18 28 is_stmt 0
+ 222 0104 03B50402 		ld	a0,32(s1)
+ 223 0108 97000000 		call	_ZN10kSemaphore8closeSemEv@plt
+ 223      E7800000 
+ 224              	.LVL27:
+  19:src/kBuffer.cpp ****     spaceAvailable->closeSem();
+ 225              		.loc 1 19 5 is_stmt 1
+ 226              		.loc 1 19 29 is_stmt 0
+ 227 0110 03B58401 		ld	a0,24(s1)
+ 228 0114 97000000 		call	_ZN10kSemaphore8closeSemEv@plt
+ 228      E7800000 
+ 229              	.LVL28:
+  20:src/kBuffer.cpp ****     mutexTail->closeSem();
+GAS LISTING /tmp/ccPAOpUK.s 			page 7
+
+
+ 230              		.loc 1 20 5 is_stmt 1
+ 231              		.loc 1 20 24 is_stmt 0
+ 232 011c 03B50403 		ld	a0,48(s1)
+ 233 0120 97000000 		call	_ZN10kSemaphore8closeSemEv@plt
+ 233      E7800000 
+ 234              	.LVL29:
+  21:src/kBuffer.cpp ****     mutexHead->closeSem();
+ 235              		.loc 1 21 5 is_stmt 1
+ 236              		.loc 1 21 24 is_stmt 0
+ 237 0128 03B58402 		ld	a0,40(s1)
+ 238 012c 97000000 		call	_ZN10kSemaphore8closeSemEv@plt
+ 238      E7800000 
+ 239              	.LVL30:
+ 240              	.LBE64:
+  22:src/kBuffer.cpp **** }
+ 241              		.loc 1 22 1
+ 242 0134 83308101 		ld	ra,24(sp)
+ 243              		.cfi_restore 1
+ 244 0138 03340101 		ld	s0,16(sp)
+ 245              		.cfi_restore 8
+ 246              		.cfi_def_cfa 2, 32
+ 247 013c 83348100 		ld	s1,8(sp)
+ 248              		.cfi_restore 9
+ 249              	.LVL31:
+ 250 0140 13010102 		addi	sp,sp,32
+ 251              		.cfi_def_cfa_offset 0
+ 252 0144 67800000 		jr	ra
+ 253              		.cfi_endproc
+ 254              	.LFE61:
+ 255              		.globl	__gxx_personality_v0
+ 256              		.section	.gcc_except_table,"a",@progbits
+ 257              	.LLSDA61:
+ 258 0000 FF       		.byte	0xff
+ 259 0001 FF       		.byte	0xff
+ 260 0002 03       		.byte	0x3
+ 261 0003 00       		.byte	0
+ 262              		.text
+ 264              		.globl	_ZN7kBufferD1Ev
+ 265              		.set	_ZN7kBufferD1Ev,_ZN7kBufferD2Ev
+ 266              		.align	2
+ 267              		.globl	_ZN7kBuffer3putEc
+ 269              	_ZN7kBuffer3putEc:
+ 270              	.LFB63:
+  23:src/kBuffer.cpp **** 
+  24:src/kBuffer.cpp **** void kBuffer::put(char val) {
+ 271              		.loc 1 24 29 is_stmt 1
+ 272              		.cfi_startproc
+ 273              	.LVL32:
+ 274 0148 130101FE 		addi	sp,sp,-32
+ 275              		.cfi_def_cfa_offset 32
+ 276 014c 233C1100 		sd	ra,24(sp)
+ 277 0150 23388100 		sd	s0,16(sp)
+ 278 0154 23349100 		sd	s1,8(sp)
+ 279 0158 23302101 		sd	s2,0(sp)
+ 280              		.cfi_offset 1, -8
+ 281              		.cfi_offset 8, -16
+ 282              		.cfi_offset 9, -24
+GAS LISTING /tmp/ccPAOpUK.s 			page 8
+
+
+ 283              		.cfi_offset 18, -32
+ 284 015c 13040102 		addi	s0,sp,32
+ 285              		.cfi_def_cfa 8, 0
+ 286 0160 93040500 		mv	s1,a0
+ 287 0164 13890500 		mv	s2,a1
+  25:src/kBuffer.cpp ****     spaceAvailable->wait();
+ 288              		.loc 1 25 5
+ 289              		.loc 1 25 25 is_stmt 0
+ 290 0168 03358501 		ld	a0,24(a0)
+ 291              	.LVL33:
+ 292 016c 97000000 		call	_ZN10kSemaphore4waitEv@plt
+ 292      E7800000 
+ 293              	.LVL34:
+  26:src/kBuffer.cpp **** 
+  27:src/kBuffer.cpp ****     mutexTail->wait();
+ 294              		.loc 1 27 5 is_stmt 1
+ 295              		.loc 1 27 20 is_stmt 0
+ 296 0174 03B50403 		ld	a0,48(s1)
+ 297 0178 97000000 		call	_ZN10kSemaphore4waitEv@plt
+ 297      E7800000 
+ 298              	.LVL35:
+  28:src/kBuffer.cpp **** 
+  29:src/kBuffer.cpp ****     buffer[tail] = val;
+ 299              		.loc 1 29 5 is_stmt 1
+ 300 0180 83B78400 		ld	a5,8(s1)
+ 301              		.loc 1 29 12 is_stmt 0
+ 302 0184 03A74401 		lw	a4,20(s1)
+ 303              		.loc 1 29 16
+ 304 0188 B387E700 		add	a5,a5,a4
+ 305              		.loc 1 29 18
+ 306 018c 23802701 		sb	s2,0(a5)
+  30:src/kBuffer.cpp ****     tail = (tail + 1) % cap;
+ 307              		.loc 1 30 5 is_stmt 1
+ 308              		.loc 1 30 13 is_stmt 0
+ 309 0190 83A74401 		lw	a5,20(s1)
+ 310              		.loc 1 30 18
+ 311 0194 9B871700 		addiw	a5,a5,1
+ 312              		.loc 1 30 25
+ 313 0198 03A70400 		lw	a4,0(s1)
+ 314              		.loc 1 30 23
+ 315 019c BBE7E702 		remw	a5,a5,a4
+ 316              		.loc 1 30 10
+ 317 01a0 23AAF400 		sw	a5,20(s1)
+  31:src/kBuffer.cpp **** 
+  32:src/kBuffer.cpp ****     mutexTail->signal();
+ 318              		.loc 1 32 5 is_stmt 1
+ 319              		.loc 1 32 22 is_stmt 0
+ 320 01a4 03B50403 		ld	a0,48(s1)
+ 321 01a8 97000000 		call	_ZN10kSemaphore6signalEv@plt
+ 321      E7800000 
+ 322              	.LVL36:
+  33:src/kBuffer.cpp **** 
+  34:src/kBuffer.cpp ****     itemAvailable->signal();
+ 323              		.loc 1 34 5 is_stmt 1
+ 324              		.loc 1 34 26 is_stmt 0
+ 325 01b0 03B50402 		ld	a0,32(s1)
+ 326 01b4 97000000 		call	_ZN10kSemaphore6signalEv@plt
+GAS LISTING /tmp/ccPAOpUK.s 			page 9
+
+
+ 326      E7800000 
+ 327              	.LVL37:
+  35:src/kBuffer.cpp **** }
+ 328              		.loc 1 35 1
+ 329 01bc 83308101 		ld	ra,24(sp)
+ 330              		.cfi_restore 1
+ 331 01c0 03340101 		ld	s0,16(sp)
+ 332              		.cfi_restore 8
+ 333              		.cfi_def_cfa 2, 32
+ 334 01c4 83348100 		ld	s1,8(sp)
+ 335              		.cfi_restore 9
+ 336              	.LVL38:
+ 337 01c8 03390100 		ld	s2,0(sp)
+ 338              		.cfi_restore 18
+ 339 01cc 13010102 		addi	sp,sp,32
+ 340              		.cfi_def_cfa_offset 0
+ 341 01d0 67800000 		jr	ra
+ 342              		.cfi_endproc
+ 343              	.LFE63:
+ 345              		.align	2
+ 346              		.globl	_ZN7kBuffer3getEv
+ 348              	_ZN7kBuffer3getEv:
+ 349              	.LFB64:
+  36:src/kBuffer.cpp **** 
+  37:src/kBuffer.cpp **** char kBuffer::get() {
+ 350              		.loc 1 37 21 is_stmt 1
+ 351              		.cfi_startproc
+ 352              	.LVL39:
+ 353 01d4 130101FE 		addi	sp,sp,-32
+ 354              		.cfi_def_cfa_offset 32
+ 355 01d8 233C1100 		sd	ra,24(sp)
+ 356 01dc 23388100 		sd	s0,16(sp)
+ 357 01e0 23349100 		sd	s1,8(sp)
+ 358 01e4 23302101 		sd	s2,0(sp)
+ 359              		.cfi_offset 1, -8
+ 360              		.cfi_offset 8, -16
+ 361              		.cfi_offset 9, -24
+ 362              		.cfi_offset 18, -32
+ 363 01e8 13040102 		addi	s0,sp,32
+ 364              		.cfi_def_cfa 8, 0
+ 365 01ec 93040500 		mv	s1,a0
+  38:src/kBuffer.cpp ****     itemAvailable->wait();
+ 366              		.loc 1 38 5
+ 367              		.loc 1 38 24 is_stmt 0
+ 368 01f0 03350502 		ld	a0,32(a0)
+ 369              	.LVL40:
+ 370 01f4 97000000 		call	_ZN10kSemaphore4waitEv@plt
+ 370      E7800000 
+ 371              	.LVL41:
+  39:src/kBuffer.cpp **** 
+  40:src/kBuffer.cpp ****     mutexHead->wait();
+ 372              		.loc 1 40 5 is_stmt 1
+ 373              		.loc 1 40 20 is_stmt 0
+ 374 01fc 03B58402 		ld	a0,40(s1)
+ 375 0200 97000000 		call	_ZN10kSemaphore4waitEv@plt
+ 375      E7800000 
+ 376              	.LVL42:
+GAS LISTING /tmp/ccPAOpUK.s 			page 10
+
+
+  41:src/kBuffer.cpp **** 
+  42:src/kBuffer.cpp ****     char ret = buffer[head];
+ 377              		.loc 1 42 5 is_stmt 1
+ 378              		.loc 1 42 16 is_stmt 0
+ 379 0208 03B78400 		ld	a4,8(s1)
+ 380              		.loc 1 42 23
+ 381 020c 83A70401 		lw	a5,16(s1)
+ 382              		.loc 1 42 27
+ 383 0210 3307F700 		add	a4,a4,a5
+ 384              		.loc 1 42 10
+ 385 0214 03490700 		lbu	s2,0(a4)
+ 386              	.LVL43:
+  43:src/kBuffer.cpp ****     head = (head + 1) % cap;
+ 387              		.loc 1 43 5 is_stmt 1
+ 388              		.loc 1 43 18 is_stmt 0
+ 389 0218 9B871700 		addiw	a5,a5,1
+ 390              		.loc 1 43 25
+ 391 021c 03A70400 		lw	a4,0(s1)
+ 392              		.loc 1 43 23
+ 393 0220 BBE7E702 		remw	a5,a5,a4
+ 394              		.loc 1 43 10
+ 395 0224 23A8F400 		sw	a5,16(s1)
+  44:src/kBuffer.cpp **** 
+  45:src/kBuffer.cpp ****     mutexHead->signal();
+ 396              		.loc 1 45 5 is_stmt 1
+ 397              		.loc 1 45 22 is_stmt 0
+ 398 0228 03B58402 		ld	a0,40(s1)
+ 399 022c 97000000 		call	_ZN10kSemaphore6signalEv@plt
+ 399      E7800000 
+ 400              	.LVL44:
+  46:src/kBuffer.cpp **** 
+  47:src/kBuffer.cpp ****     spaceAvailable->signal();
+ 401              		.loc 1 47 5 is_stmt 1
+ 402              		.loc 1 47 27 is_stmt 0
+ 403 0234 03B58401 		ld	a0,24(s1)
+ 404 0238 97000000 		call	_ZN10kSemaphore6signalEv@plt
+ 404      E7800000 
+ 405              	.LVL45:
+  48:src/kBuffer.cpp ****     return ret;
+ 406              		.loc 1 48 5 is_stmt 1
+  49:src/kBuffer.cpp **** }
+ 407              		.loc 1 49 1 is_stmt 0
+ 408 0240 13050900 		mv	a0,s2
+ 409 0244 83308101 		ld	ra,24(sp)
+ 410              		.cfi_restore 1
+ 411 0248 03340101 		ld	s0,16(sp)
+ 412              		.cfi_restore 8
+ 413              		.cfi_def_cfa 2, 32
+ 414 024c 83348100 		ld	s1,8(sp)
+ 415              		.cfi_restore 9
+ 416              	.LVL46:
+ 417 0250 03390100 		ld	s2,0(sp)
+ 418              		.cfi_restore 18
+ 419              	.LVL47:
+ 420 0254 13010102 		addi	sp,sp,32
+ 421              		.cfi_def_cfa_offset 0
+ 422 0258 67800000 		jr	ra
+GAS LISTING /tmp/ccPAOpUK.s 			page 11
+
+
+ 423              		.cfi_endproc
+ 424              	.LFE64:
+ 426              		.align	2
+ 427              		.globl	_ZN7kBuffer6getCntEv
+ 429              	_ZN7kBuffer6getCntEv:
+ 430              	.LFB65:
+  50:src/kBuffer.cpp **** 
+  51:src/kBuffer.cpp **** int kBuffer::getCnt() {
+ 431              		.loc 1 51 23 is_stmt 1
+ 432              		.cfi_startproc
+ 433              	.LVL48:
+ 434 025c 130101FE 		addi	sp,sp,-32
+ 435              		.cfi_def_cfa_offset 32
+ 436 0260 233C1100 		sd	ra,24(sp)
+ 437 0264 23388100 		sd	s0,16(sp)
+ 438 0268 23349100 		sd	s1,8(sp)
+ 439 026c 23302101 		sd	s2,0(sp)
+ 440              		.cfi_offset 1, -8
+ 441              		.cfi_offset 8, -16
+ 442              		.cfi_offset 9, -24
+ 443              		.cfi_offset 18, -32
+ 444 0270 13040102 		addi	s0,sp,32
+ 445              		.cfi_def_cfa 8, 0
+ 446 0274 93040500 		mv	s1,a0
+  52:src/kBuffer.cpp ****     int ret;
+ 447              		.loc 1 52 5
+  53:src/kBuffer.cpp **** 
+  54:src/kBuffer.cpp ****     mutexHead->wait();
+ 448              		.loc 1 54 5
+ 449              		.loc 1 54 20 is_stmt 0
+ 450 0278 03358502 		ld	a0,40(a0)
+ 451              	.LVL49:
+ 452 027c 97000000 		call	_ZN10kSemaphore4waitEv@plt
+ 452      E7800000 
+ 453              	.LVL50:
+  55:src/kBuffer.cpp **** 
+  56:src/kBuffer.cpp ****     mutexTail->wait();
+ 454              		.loc 1 56 5 is_stmt 1
+ 455              		.loc 1 56 20 is_stmt 0
+ 456 0284 03B50403 		ld	a0,48(s1)
+ 457 0288 97000000 		call	_ZN10kSemaphore4waitEv@plt
+ 457      E7800000 
+ 458              	.LVL51:
+  57:src/kBuffer.cpp **** 
+  58:src/kBuffer.cpp ****     if (tail >= head) {
+ 459              		.loc 1 58 5 is_stmt 1
+ 460              		.loc 1 58 9 is_stmt 0
+ 461 0290 83A74401 		lw	a5,20(s1)
+ 462              		.loc 1 58 17
+ 463 0294 03A90401 		lw	s2,16(s1)
+ 464              		.loc 1 58 5
+ 465 0298 63CE2703 		blt	a5,s2,.L10
+  59:src/kBuffer.cpp ****         ret = tail - head;
+ 466              		.loc 1 59 9 is_stmt 1
+ 467              		.loc 1 59 13 is_stmt 0
+ 468 029c 3B892741 		subw	s2,a5,s2
+ 469              	.LVL52:
+GAS LISTING /tmp/ccPAOpUK.s 			page 12
+
+
+ 470              	.L11:
+  60:src/kBuffer.cpp ****     } else {
+  61:src/kBuffer.cpp ****         ret = cap - head + tail;
+  62:src/kBuffer.cpp ****     }
+  63:src/kBuffer.cpp **** 
+  64:src/kBuffer.cpp ****     mutexTail->signal();
+ 471              		.loc 1 64 5 is_stmt 1
+ 472              		.loc 1 64 22 is_stmt 0
+ 473 02a0 03B50403 		ld	a0,48(s1)
+ 474 02a4 97000000 		call	_ZN10kSemaphore6signalEv@plt
+ 474      E7800000 
+ 475              	.LVL53:
+  65:src/kBuffer.cpp **** 
+  66:src/kBuffer.cpp ****     mutexHead->signal();
+ 476              		.loc 1 66 5 is_stmt 1
+ 477              		.loc 1 66 22 is_stmt 0
+ 478 02ac 03B58402 		ld	a0,40(s1)
+ 479 02b0 97000000 		call	_ZN10kSemaphore6signalEv@plt
+ 479      E7800000 
+ 480              	.LVL54:
+  67:src/kBuffer.cpp **** 
+  68:src/kBuffer.cpp ****     return ret;
+ 481              		.loc 1 68 5 is_stmt 1
+  69:src/kBuffer.cpp **** }...
+ 482              		.loc 1 69 1 is_stmt 0
+ 483 02b8 13050900 		mv	a0,s2
+ 484 02bc 83308101 		ld	ra,24(sp)
+ 485              		.cfi_remember_state
+ 486              		.cfi_restore 1
+ 487 02c0 03340101 		ld	s0,16(sp)
+ 488              		.cfi_restore 8
+ 489              		.cfi_def_cfa 2, 32
+ 490 02c4 83348100 		ld	s1,8(sp)
+ 491              		.cfi_restore 9
+ 492              	.LVL55:
+ 493 02c8 03390100 		ld	s2,0(sp)
+ 494              		.cfi_restore 18
+ 495              	.LVL56:
+ 496 02cc 13010102 		addi	sp,sp,32
+ 497              		.cfi_def_cfa_offset 0
+ 498 02d0 67800000 		jr	ra
+ 499              	.LVL57:
+ 500              	.L10:
+ 501              		.cfi_restore_state
+  61:src/kBuffer.cpp ****         ret = cap - head + tail;
+ 502              		.loc 1 61 9 is_stmt 1
+  61:src/kBuffer.cpp ****         ret = cap - head + tail;
+ 503              		.loc 1 61 15 is_stmt 0
+ 504 02d4 03A70400 		lw	a4,0(s1)
+  61:src/kBuffer.cpp ****         ret = cap - head + tail;
+ 505              		.loc 1 61 19
+ 506 02d8 3B092741 		subw	s2,a4,s2
+  61:src/kBuffer.cpp ****         ret = cap - head + tail;
+ 507              		.loc 1 61 13
+ 508 02dc 3B09F900 		addw	s2,s2,a5
+ 509 02e0 6FF01FFC 		j	.L11
+ 510              		.cfi_endproc
+GAS LISTING /tmp/ccPAOpUK.s 			page 13
+
+
+ 511              	.LFE65:
+ 513              	.Letext0:
+ 514              		.file 4 "src/../h/../h/../lib/hw.h"
+ 515              		.file 5 "src/../h/../h/../h/../h/../h/Allocator.hpp"
+ 516              		.file 6 "src/../h/../h/tcb.hpp"
+ 517              		.file 7 "src/../h/../h/../h/tipovi.hpp"
+ 518              		.file 8 "src/../h/kBuffer.hpp"
+ 3925              		.align	3
+ 3928              	DW.ref.__gxx_personality_v0:
+ 3929 0000 00000000 		.dword	__gxx_personality_v0
+ 3929      00000000 
+ 3930              		.ident	"GCC: (Ubuntu 9.4.0-1ubuntu1~20.04) 9.4.0"
+ 3931              		.section	.note.GNU-stack,"",@progbits
+GAS LISTING /tmp/ccPAOpUK.s 			page 14
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 kBuffer.cpp
+     /tmp/ccPAOpUK.s:9      .text:0000000000000000 _ZN7kBufferC2Ei
+     /tmp/ccPAOpUK.s:13     .text:0000000000000000 .L0 
+     /tmp/ccPAOpUK.s:15     .text:0000000000000000 .L0 
+     /tmp/ccPAOpUK.s:16     .text:0000000000000004 .L0 
+     /tmp/ccPAOpUK.s:21     .text:0000000000000014 .L0 
+     /tmp/ccPAOpUK.s:22     .text:0000000000000014 .L0 
+     /tmp/ccPAOpUK.s:23     .text:0000000000000014 .L0 
+     /tmp/ccPAOpUK.s:24     .text:0000000000000014 .L0 
+     /tmp/ccPAOpUK.s:26     .text:0000000000000018 .L0 
+     /tmp/ccPAOpUK.s:31     .text:0000000000000020 .L0 
+     /tmp/ccPAOpUK.s:35     .text:0000000000000028 .L0 
+     /tmp/ccPAOpUK.s:39     .text:0000000000000034 .L0 
+     /tmp/ccPAOpUK.s:40     .text:0000000000000034 .L0 
+     /tmp/ccPAOpUK.s:44     .text:0000000000000040 .L0 
+     /tmp/ccPAOpUK.s:50     .text:0000000000000044 .L0 
+     /tmp/ccPAOpUK.s:51     .text:0000000000000044 .L0 
+     /tmp/ccPAOpUK.s:52     .text:0000000000000044 .L0 
+     /tmp/ccPAOpUK.s:60     .text:0000000000000050 .L0 
+     /tmp/ccPAOpUK.s:66     .text:0000000000000054 .L0 
+     /tmp/ccPAOpUK.s:72     .text:000000000000005c .L0 
+     /tmp/ccPAOpUK.s:77     .text:0000000000000060 .L0 
+     /tmp/ccPAOpUK.s:82     .text:0000000000000064 .L0 
+     /tmp/ccPAOpUK.s:83     .text:0000000000000064 .L0 
+     /tmp/ccPAOpUK.s:84     .text:0000000000000064 .L0 
+     /tmp/ccPAOpUK.s:92     .text:0000000000000070 .L0 
+     /tmp/ccPAOpUK.s:97     .text:0000000000000074 .L0 
+     /tmp/ccPAOpUK.s:103    .text:000000000000007c .L0 
+     /tmp/ccPAOpUK.s:108    .text:0000000000000080 .L0 
+     /tmp/ccPAOpUK.s:113    .text:0000000000000084 .L0 
+     /tmp/ccPAOpUK.s:114    .text:0000000000000084 .L0 
+     /tmp/ccPAOpUK.s:115    .text:0000000000000084 .L0 
+     /tmp/ccPAOpUK.s:123    .text:0000000000000090 .L0 
+     /tmp/ccPAOpUK.s:129    .text:0000000000000098 .L0 
+     /tmp/ccPAOpUK.s:135    .text:00000000000000a0 .L0 
+     /tmp/ccPAOpUK.s:140    .text:00000000000000a4 .L0 
+     /tmp/ccPAOpUK.s:145    .text:00000000000000a8 .L0 
+     /tmp/ccPAOpUK.s:146    .text:00000000000000a8 .L0 
+     /tmp/ccPAOpUK.s:147    .text:00000000000000a8 .L0 
+     /tmp/ccPAOpUK.s:155    .text:00000000000000b4 .L0 
+     /tmp/ccPAOpUK.s:160    .text:00000000000000b8 .L0 
+     /tmp/ccPAOpUK.s:166    .text:00000000000000c0 .L0 
+     /tmp/ccPAOpUK.s:171    .text:00000000000000c4 .L0 
+     /tmp/ccPAOpUK.s:174    .text:00000000000000c8 .L0 
+     /tmp/ccPAOpUK.s:175    .text:00000000000000cc .L0 
+     /tmp/ccPAOpUK.s:177    .text:00000000000000d0 .L0 
+     /tmp/ccPAOpUK.s:178    .text:00000000000000d0 .L0 
+     /tmp/ccPAOpUK.s:180    .text:00000000000000d4 .L0 
+     /tmp/ccPAOpUK.s:183    .text:00000000000000d8 .L0 
+     /tmp/ccPAOpUK.s:185    .text:00000000000000dc .L0 
+     /tmp/ccPAOpUK.s:187    .text:00000000000000e0 .L0 
+     /tmp/ccPAOpUK.s:9      .text:0000000000000000 _ZN7kBufferC1Ei
+     /tmp/ccPAOpUK.s:195    .text:00000000000000e0 _ZN7kBufferD2Ev
+     /tmp/ccPAOpUK.s:198    .text:00000000000000e0 .L0 
+     /tmp/ccPAOpUK.s:3928   .data.rel.local.DW.ref.__gxx_personality_v0:0000000000000000 DW.ref.__gxx_personality_v0
+     /tmp/ccPAOpUK.s:202    .text:00000000000000e0 .L0 
+GAS LISTING /tmp/ccPAOpUK.s 			page 15
+
+
+     /tmp/ccPAOpUK.s:203    .text:00000000000000e4 .L0 
+     /tmp/ccPAOpUK.s:207    .text:00000000000000f0 .L0 
+     /tmp/ccPAOpUK.s:208    .text:00000000000000f0 .L0 
+     /tmp/ccPAOpUK.s:209    .text:00000000000000f0 .L0 
+     /tmp/ccPAOpUK.s:211    .text:00000000000000f4 .L0 
+     /tmp/ccPAOpUK.s:215    .text:00000000000000f8 .L0 
+     /tmp/ccPAOpUK.s:216    .text:00000000000000f8 .L0 
+     /tmp/ccPAOpUK.s:221    .text:0000000000000104 .L0 
+     /tmp/ccPAOpUK.s:222    .text:0000000000000104 .L0 
+     /tmp/ccPAOpUK.s:226    .text:0000000000000110 .L0 
+     /tmp/ccPAOpUK.s:227    .text:0000000000000110 .L0 
+     /tmp/ccPAOpUK.s:231    .text:000000000000011c .L0 
+     /tmp/ccPAOpUK.s:232    .text:000000000000011c .L0 
+     /tmp/ccPAOpUK.s:236    .text:0000000000000128 .L0 
+     /tmp/ccPAOpUK.s:237    .text:0000000000000128 .L0 
+     /tmp/ccPAOpUK.s:242    .text:0000000000000134 .L0 
+     /tmp/ccPAOpUK.s:243    .text:0000000000000138 .L0 
+     /tmp/ccPAOpUK.s:245    .text:000000000000013c .L0 
+     /tmp/ccPAOpUK.s:246    .text:000000000000013c .L0 
+     /tmp/ccPAOpUK.s:248    .text:0000000000000140 .L0 
+     /tmp/ccPAOpUK.s:251    .text:0000000000000144 .L0 
+     /tmp/ccPAOpUK.s:253    .text:0000000000000148 .L0 
+     /tmp/ccPAOpUK.s:195    .text:00000000000000e0 _ZN7kBufferD1Ev
+     /tmp/ccPAOpUK.s:269    .text:0000000000000148 _ZN7kBuffer3putEc
+     /tmp/ccPAOpUK.s:272    .text:0000000000000148 .L0 
+     /tmp/ccPAOpUK.s:274    .text:0000000000000148 .L0 
+     /tmp/ccPAOpUK.s:275    .text:000000000000014c .L0 
+     /tmp/ccPAOpUK.s:280    .text:000000000000015c .L0 
+     /tmp/ccPAOpUK.s:281    .text:000000000000015c .L0 
+     /tmp/ccPAOpUK.s:282    .text:000000000000015c .L0 
+     /tmp/ccPAOpUK.s:283    .text:000000000000015c .L0 
+     /tmp/ccPAOpUK.s:285    .text:0000000000000160 .L0 
+     /tmp/ccPAOpUK.s:289    .text:0000000000000168 .L0 
+     /tmp/ccPAOpUK.s:290    .text:0000000000000168 .L0 
+     /tmp/ccPAOpUK.s:295    .text:0000000000000174 .L0 
+     /tmp/ccPAOpUK.s:296    .text:0000000000000174 .L0 
+     /tmp/ccPAOpUK.s:300    .text:0000000000000180 .L0 
+     /tmp/ccPAOpUK.s:302    .text:0000000000000184 .L0 
+     /tmp/ccPAOpUK.s:304    .text:0000000000000188 .L0 
+     /tmp/ccPAOpUK.s:306    .text:000000000000018c .L0 
+     /tmp/ccPAOpUK.s:308    .text:0000000000000190 .L0 
+     /tmp/ccPAOpUK.s:309    .text:0000000000000190 .L0 
+     /tmp/ccPAOpUK.s:311    .text:0000000000000194 .L0 
+     /tmp/ccPAOpUK.s:313    .text:0000000000000198 .L0 
+     /tmp/ccPAOpUK.s:315    .text:000000000000019c .L0 
+     /tmp/ccPAOpUK.s:317    .text:00000000000001a0 .L0 
+     /tmp/ccPAOpUK.s:319    .text:00000000000001a4 .L0 
+     /tmp/ccPAOpUK.s:320    .text:00000000000001a4 .L0 
+     /tmp/ccPAOpUK.s:324    .text:00000000000001b0 .L0 
+     /tmp/ccPAOpUK.s:325    .text:00000000000001b0 .L0 
+     /tmp/ccPAOpUK.s:329    .text:00000000000001bc .L0 
+     /tmp/ccPAOpUK.s:330    .text:00000000000001c0 .L0 
+     /tmp/ccPAOpUK.s:332    .text:00000000000001c4 .L0 
+     /tmp/ccPAOpUK.s:333    .text:00000000000001c4 .L0 
+     /tmp/ccPAOpUK.s:335    .text:00000000000001c8 .L0 
+     /tmp/ccPAOpUK.s:338    .text:00000000000001cc .L0 
+     /tmp/ccPAOpUK.s:340    .text:00000000000001d0 .L0 
+GAS LISTING /tmp/ccPAOpUK.s 			page 16
+
+
+     /tmp/ccPAOpUK.s:342    .text:00000000000001d4 .L0 
+     /tmp/ccPAOpUK.s:348    .text:00000000000001d4 _ZN7kBuffer3getEv
+     /tmp/ccPAOpUK.s:351    .text:00000000000001d4 .L0 
+     /tmp/ccPAOpUK.s:353    .text:00000000000001d4 .L0 
+     /tmp/ccPAOpUK.s:354    .text:00000000000001d8 .L0 
+     /tmp/ccPAOpUK.s:359    .text:00000000000001e8 .L0 
+     /tmp/ccPAOpUK.s:360    .text:00000000000001e8 .L0 
+     /tmp/ccPAOpUK.s:361    .text:00000000000001e8 .L0 
+     /tmp/ccPAOpUK.s:362    .text:00000000000001e8 .L0 
+     /tmp/ccPAOpUK.s:364    .text:00000000000001ec .L0 
+     /tmp/ccPAOpUK.s:367    .text:00000000000001f0 .L0 
+     /tmp/ccPAOpUK.s:368    .text:00000000000001f0 .L0 
+     /tmp/ccPAOpUK.s:373    .text:00000000000001fc .L0 
+     /tmp/ccPAOpUK.s:374    .text:00000000000001fc .L0 
+     /tmp/ccPAOpUK.s:378    .text:0000000000000208 .L0 
+     /tmp/ccPAOpUK.s:379    .text:0000000000000208 .L0 
+     /tmp/ccPAOpUK.s:381    .text:000000000000020c .L0 
+     /tmp/ccPAOpUK.s:383    .text:0000000000000210 .L0 
+     /tmp/ccPAOpUK.s:385    .text:0000000000000214 .L0 
+     /tmp/ccPAOpUK.s:388    .text:0000000000000218 .L0 
+     /tmp/ccPAOpUK.s:389    .text:0000000000000218 .L0 
+     /tmp/ccPAOpUK.s:391    .text:000000000000021c .L0 
+     /tmp/ccPAOpUK.s:393    .text:0000000000000220 .L0 
+     /tmp/ccPAOpUK.s:395    .text:0000000000000224 .L0 
+     /tmp/ccPAOpUK.s:397    .text:0000000000000228 .L0 
+     /tmp/ccPAOpUK.s:398    .text:0000000000000228 .L0 
+     /tmp/ccPAOpUK.s:402    .text:0000000000000234 .L0 
+     /tmp/ccPAOpUK.s:403    .text:0000000000000234 .L0 
+     /tmp/ccPAOpUK.s:407    .text:0000000000000240 .L0 
+     /tmp/ccPAOpUK.s:408    .text:0000000000000240 .L0 
+     /tmp/ccPAOpUK.s:410    .text:0000000000000248 .L0 
+     /tmp/ccPAOpUK.s:412    .text:000000000000024c .L0 
+     /tmp/ccPAOpUK.s:413    .text:000000000000024c .L0 
+     /tmp/ccPAOpUK.s:415    .text:0000000000000250 .L0 
+     /tmp/ccPAOpUK.s:418    .text:0000000000000254 .L0 
+     /tmp/ccPAOpUK.s:421    .text:0000000000000258 .L0 
+     /tmp/ccPAOpUK.s:423    .text:000000000000025c .L0 
+     /tmp/ccPAOpUK.s:429    .text:000000000000025c _ZN7kBuffer6getCntEv
+     /tmp/ccPAOpUK.s:432    .text:000000000000025c .L0 
+     /tmp/ccPAOpUK.s:434    .text:000000000000025c .L0 
+     /tmp/ccPAOpUK.s:435    .text:0000000000000260 .L0 
+     /tmp/ccPAOpUK.s:440    .text:0000000000000270 .L0 
+     /tmp/ccPAOpUK.s:441    .text:0000000000000270 .L0 
+     /tmp/ccPAOpUK.s:442    .text:0000000000000270 .L0 
+     /tmp/ccPAOpUK.s:443    .text:0000000000000270 .L0 
+     /tmp/ccPAOpUK.s:445    .text:0000000000000274 .L0 
+     /tmp/ccPAOpUK.s:448    .text:0000000000000278 .L0 
+     /tmp/ccPAOpUK.s:449    .text:0000000000000278 .L0 
+     /tmp/ccPAOpUK.s:450    .text:0000000000000278 .L0 
+     /tmp/ccPAOpUK.s:455    .text:0000000000000284 .L0 
+     /tmp/ccPAOpUK.s:456    .text:0000000000000284 .L0 
+     /tmp/ccPAOpUK.s:460    .text:0000000000000290 .L0 
+     /tmp/ccPAOpUK.s:461    .text:0000000000000290 .L0 
+     /tmp/ccPAOpUK.s:463    .text:0000000000000294 .L0 
+     /tmp/ccPAOpUK.s:465    .text:0000000000000298 .L0 
+     /tmp/ccPAOpUK.s:467    .text:000000000000029c .L0 
+     /tmp/ccPAOpUK.s:468    .text:000000000000029c .L0 
+GAS LISTING /tmp/ccPAOpUK.s 			page 17
+
+
+     /tmp/ccPAOpUK.s:472    .text:00000000000002a0 .L0 
+     /tmp/ccPAOpUK.s:473    .text:00000000000002a0 .L0 
+     /tmp/ccPAOpUK.s:477    .text:00000000000002ac .L0 
+     /tmp/ccPAOpUK.s:478    .text:00000000000002ac .L0 
+     /tmp/ccPAOpUK.s:482    .text:00000000000002b8 .L0 
+     /tmp/ccPAOpUK.s:483    .text:00000000000002b8 .L0 
+     /tmp/ccPAOpUK.s:485    .text:00000000000002c0 .L0 
+     /tmp/ccPAOpUK.s:486    .text:00000000000002c0 .L0 
+     /tmp/ccPAOpUK.s:488    .text:00000000000002c4 .L0 
+     /tmp/ccPAOpUK.s:489    .text:00000000000002c4 .L0 
+     /tmp/ccPAOpUK.s:491    .text:00000000000002c8 .L0 
+     /tmp/ccPAOpUK.s:494    .text:00000000000002cc .L0 
+     /tmp/ccPAOpUK.s:497    .text:00000000000002d0 .L0 
+     /tmp/ccPAOpUK.s:501    .text:00000000000002d4 .L0 
+     /tmp/ccPAOpUK.s:503    .text:00000000000002d4 .L0 
+     /tmp/ccPAOpUK.s:504    .text:00000000000002d4 .L0 
+     /tmp/ccPAOpUK.s:506    .text:00000000000002d8 .L0 
+     /tmp/ccPAOpUK.s:508    .text:00000000000002dc .L0 
+     /tmp/ccPAOpUK.s:510    .text:00000000000002e4 .L0 
+     /tmp/ccPAOpUK.s:519    .text:00000000000002e4 .L0 
+     /tmp/ccPAOpUK.s:500    .text:00000000000002d4 .L10
+     /tmp/ccPAOpUK.s:470    .text:00000000000002a0 .L11
+     /tmp/ccPAOpUK.s:2231   .debug_abbrev:0000000000000000 .Ldebug_abbrev0
+     /tmp/ccPAOpUK.s:3866   .debug_str:00000000000007f7 .LASF151
+     /tmp/ccPAOpUK.s:3626   .debug_str:00000000000000e8 .LASF152
+     /tmp/ccPAOpUK.s:3836   .debug_str:000000000000073c .LASF153
+     /tmp/ccPAOpUK.s:5      .text:0000000000000000 .Ltext0
+     /tmp/ccPAOpUK.s:513    .text:00000000000002e4 .Letext0
+     /tmp/ccPAOpUK.s:3590   .debug_line:0000000000000000 .Ldebug_line0
+     /tmp/ccPAOpUK.s:3702   .debug_str:0000000000000359 .LASF0
+     /tmp/ccPAOpUK.s:3722   .debug_str:00000000000003ff .LASF1
+     /tmp/ccPAOpUK.s:3808   .debug_str:000000000000066e .LASF2
+     /tmp/ccPAOpUK.s:3816   .debug_str:000000000000069e .LASF4
+     /tmp/ccPAOpUK.s:3706   .debug_str:0000000000000378 .LASF3
+     /tmp/ccPAOpUK.s:3608   .debug_str:000000000000007c .LASF5
+     /tmp/ccPAOpUK.s:3784   .debug_str:00000000000005d9 .LASF6
+     /tmp/ccPAOpUK.s:3780   .debug_str:00000000000005b9 .LASF7
+     /tmp/ccPAOpUK.s:3714   .debug_str:00000000000003c3 .LASF8
+     /tmp/ccPAOpUK.s:3684   .debug_str:00000000000002da .LASF9
+     /tmp/ccPAOpUK.s:3692   .debug_str:000000000000031a .LASF10
+     /tmp/ccPAOpUK.s:3634   .debug_str:000000000000013f .LASF11
+     /tmp/ccPAOpUK.s:3674   .debug_str:0000000000000297 .LASF12
+     /tmp/ccPAOpUK.s:3644   .debug_str:0000000000000188 .LASF13
+     /tmp/ccPAOpUK.s:3632   .debug_str:000000000000012f .LASF14
+     /tmp/ccPAOpUK.s:3844   .debug_str:0000000000000790 .LASF15
+     /tmp/ccPAOpUK.s:3664   .debug_str:000000000000021d .LASF16
+     /tmp/ccPAOpUK.s:3834   .debug_str:0000000000000726 .LASF17
+     /tmp/ccPAOpUK.s:3620   .debug_str:00000000000000c4 .LASF25
+     /tmp/ccPAOpUK.s:3828   .debug_str:0000000000000701 .LASF48
+     /tmp/ccPAOpUK.s:3636   .debug_str:000000000000014e .LASF18
+     /tmp/ccPAOpUK.s:3720   .debug_str:00000000000003fa .LASF19
+     /tmp/ccPAOpUK.s:3772   .debug_str:0000000000000579 .LASF20
+     /tmp/ccPAOpUK.s:3840   .debug_str:000000000000077d .LASF27
+     /tmp/ccPAOpUK.s:3616   .debug_str:00000000000000ac .LASF61
+     /tmp/ccPAOpUK.s:3610   .debug_str:0000000000000083 .LASF63
+     /tmp/ccPAOpUK.s:3744   .debug_str:00000000000004b1 .LASF21
+     /tmp/ccPAOpUK.s:3868   .debug_str:00000000000008bb .LASF23
+GAS LISTING /tmp/ccPAOpUK.s 			page 18
+
+
+     /tmp/ccPAOpUK.s:3612   .debug_str:0000000000000098 .LASF22
+     /tmp/ccPAOpUK.s:3818   .debug_str:00000000000006a5 .LASF24
+     /tmp/ccPAOpUK.s:3860   .debug_str:00000000000007e5 .LASF92
+     /tmp/ccPAOpUK.s:3764   .debug_str:000000000000053e .LASF94
+     /tmp/ccPAOpUK.s:3900   .debug_str:000000000000099e .LASF26
+     /tmp/ccPAOpUK.s:3890   .debug_str:0000000000000957 .LASF154
+     /tmp/ccPAOpUK.s:3766   .debug_str:0000000000000564 .LASF28
+     /tmp/ccPAOpUK.s:3758   .debug_str:0000000000000517 .LASF29
+     /tmp/ccPAOpUK.s:3848   .debug_str:00000000000007a3 .LASF30
+     /tmp/ccPAOpUK.s:3672   .debug_str:0000000000000280 .LASF36
+     /tmp/ccPAOpUK.s:3812   .debug_str:0000000000000689 .LASF155
+     /tmp/ccPAOpUK.s:3802   .debug_str:0000000000000640 .LASF156
+     /tmp/ccPAOpUK.s:3718   .debug_str:00000000000003f1 .LASF31
+     /tmp/ccPAOpUK.s:3630   .debug_str:0000000000000112 .LASF32
+     /tmp/ccPAOpUK.s:3738   .debug_str:000000000000048a .LASF33
+     /tmp/ccPAOpUK.s:3666   .debug_str:0000000000000233 .LASF34
+     /tmp/ccPAOpUK.s:3778   .debug_str:00000000000005ad .LASF35
+     /tmp/ccPAOpUK.s:3902   .debug_str:00000000000009a8 .LASF37
+     /tmp/ccPAOpUK.s:3920   .debug_str:0000000000000a4e .LASF38
+     /tmp/ccPAOpUK.s:3912   .debug_str:00000000000009f9 .LASF39
+     /tmp/ccPAOpUK.s:3826   .debug_str:00000000000006f6 .LASF40
+     /tmp/ccPAOpUK.s:3712   .debug_str:00000000000003a6 .LASF41
+     /tmp/ccPAOpUK.s:3796   .debug_str:000000000000061e .LASF42
+     /tmp/ccPAOpUK.s:3600   .debug_str:0000000000000024 .LASF43
+     /tmp/ccPAOpUK.s:3898   .debug_str:0000000000000990 .LASF44
+     /tmp/ccPAOpUK.s:3838   .debug_str:0000000000000753 .LASF45
+     /tmp/ccPAOpUK.s:3710   .debug_str:000000000000039a .LASF46
+     /tmp/ccPAOpUK.s:3662   .debug_str:00000000000001fc .LASF47
+     /tmp/ccPAOpUK.s:3852   .debug_str:00000000000007bf .LASF49
+     /tmp/ccPAOpUK.s:3654   .debug_str:00000000000001de .LASF50
+     /tmp/ccPAOpUK.s:3854   .debug_str:00000000000007c7 .LASF51
+     /tmp/ccPAOpUK.s:3762   .debug_str:0000000000000527 .LASF52
+     /tmp/ccPAOpUK.s:3622   .debug_str:00000000000000ce .LASF53
+     /tmp/ccPAOpUK.s:3884   .debug_str:000000000000092e .LASF54
+     /tmp/ccPAOpUK.s:3732   .debug_str:0000000000000450 .LASF55
+     /tmp/ccPAOpUK.s:3894   .debug_str:0000000000000966 .LASF56
+     /tmp/ccPAOpUK.s:3794   .debug_str:0000000000000613 .LASF69
+     /tmp/ccPAOpUK.s:3914   .debug_str:0000000000000a14 .LASF71
+     /tmp/ccPAOpUK.s:3804   .debug_str:0000000000000657 .LASF157
+     /tmp/ccPAOpUK.s:3790   .debug_str:00000000000005fb .LASF57
+     /tmp/ccPAOpUK.s:3742   .debug_str:000000000000049f .LASF58
+     /tmp/ccPAOpUK.s:3842   .debug_str:0000000000000782 .LASF59
+     /tmp/ccPAOpUK.s:3652   .debug_str:00000000000001b7 .LASF60
+     /tmp/ccPAOpUK.s:3726   .debug_str:000000000000041c .LASF62
+     /tmp/ccPAOpUK.s:3870   .debug_str:00000000000008d3 .LASF64
+     /tmp/ccPAOpUK.s:3864   .debug_str:00000000000007ef .LASF65
+     /tmp/ccPAOpUK.s:3850   .debug_str:00000000000007b6 .LASF66
+     /tmp/ccPAOpUK.s:3918   .debug_str:0000000000000a41 .LASF67
+     /tmp/ccPAOpUK.s:3690   .debug_str:000000000000030e .LASF68
+     /tmp/ccPAOpUK.s:3596   .debug_str:000000000000000c .LASF70
+     /tmp/ccPAOpUK.s:3740   .debug_str:0000000000000492 .LASF72
+     /tmp/ccPAOpUK.s:3746   .debug_str:00000000000004b9 .LASF73
+     /tmp/ccPAOpUK.s:3680   .debug_str:00000000000002b2 .LASF74
+     /tmp/ccPAOpUK.s:3832   .debug_str:0000000000000713 .LASF75
+     /tmp/ccPAOpUK.s:3810   .debug_str:000000000000067c .LASF76
+     /tmp/ccPAOpUK.s:3788   .debug_str:00000000000005f6 .LASF77
+     /tmp/ccPAOpUK.s:3604   .debug_str:0000000000000066 .LASF78
+GAS LISTING /tmp/ccPAOpUK.s 			page 19
+
+
+     /tmp/ccPAOpUK.s:3658   .debug_str:00000000000001ee .LASF79
+     /tmp/ccPAOpUK.s:3640   .debug_str:000000000000016a .LASF80
+     /tmp/ccPAOpUK.s:3916   .debug_str:0000000000000a2a .LASF158
+     /tmp/ccPAOpUK.s:3594   .debug_str:0000000000000007 .LASF81
+     /tmp/ccPAOpUK.s:3830   .debug_str:000000000000070d .LASF82
+     /tmp/ccPAOpUK.s:3880   .debug_str:0000000000000917 .LASF83
+     /tmp/ccPAOpUK.s:3874   .debug_str:00000000000008f3 .LASF84
+     /tmp/ccPAOpUK.s:3878   .debug_str:000000000000090e .LASF85
+     /tmp/ccPAOpUK.s:3774   .debug_str:0000000000000583 .LASF86
+     /tmp/ccPAOpUK.s:3760   .debug_str:000000000000051c .LASF87
+     /tmp/ccPAOpUK.s:3768   .debug_str:0000000000000569 .LASF88
+     /tmp/ccPAOpUK.s:3858   .debug_str:00000000000007d7 .LASF89
+     /tmp/ccPAOpUK.s:3806   .debug_str:000000000000065c .LASF90
+     /tmp/ccPAOpUK.s:3786   .debug_str:00000000000005e0 .LASF91
+     /tmp/ccPAOpUK.s:3624   .debug_str:00000000000000da .LASF159
+     /tmp/ccPAOpUK.s:3734   .debug_str:000000000000045d .LASF160
+     /tmp/ccPAOpUK.s:3648   .debug_str:00000000000001a1 .LASF93
+     /tmp/ccPAOpUK.s:3602   .debug_str:000000000000003e .LASF95
+     /tmp/ccPAOpUK.s:3822   .debug_str:00000000000006d0 .LASF98
+     /tmp/ccPAOpUK.s:3814   .debug_str:0000000000000693 .LASF96
+     /tmp/ccPAOpUK.s:3906   .debug_str:00000000000009cf .LASF97
+     /tmp/ccPAOpUK.s:3782   .debug_str:00000000000005cc .LASF99
+     /tmp/ccPAOpUK.s:3592   .debug_str:0000000000000000 .LASF100
+     /tmp/ccPAOpUK.s:3642   .debug_str:000000000000017d .LASF101
+     /tmp/ccPAOpUK.s:3908   .debug_str:00000000000009da .LASF102
+     /tmp/ccPAOpUK.s:3886   .debug_str:0000000000000945 .LASF103
+     /tmp/ccPAOpUK.s:3686   .debug_str:00000000000002ea .LASF104
+     /tmp/ccPAOpUK.s:3904   .debug_str:00000000000009c6 .LASF105
+     /tmp/ccPAOpUK.s:3716   .debug_str:00000000000003d6 .LASF106
+     /tmp/ccPAOpUK.s:3770   .debug_str:0000000000000571 .LASF107
+     /tmp/ccPAOpUK.s:3728   .debug_str:0000000000000422 .LASF108
+     /tmp/ccPAOpUK.s:3614   .debug_str:00000000000000a2 .LASF109
+     /tmp/ccPAOpUK.s:3682   .debug_str:00000000000002be .LASF110
+     /tmp/ccPAOpUK.s:3660   .debug_str:00000000000001f7 .LASF111
+     /tmp/ccPAOpUK.s:3638   .debug_str:0000000000000153 .LASF112
+     /tmp/ccPAOpUK.s:3846   .debug_str:000000000000079c .LASF113
+     /tmp/ccPAOpUK.s:3910   .debug_str:00000000000009e0 .LASF114
+     /tmp/ccPAOpUK.s:3696   .debug_str:0000000000000338 .LASF115
+     /tmp/ccPAOpUK.s:3670   .debug_str:0000000000000267 .LASF116
+     /tmp/ccPAOpUK.s:3650   .debug_str:00000000000001af .LASF117
+     /tmp/ccPAOpUK.s:3776   .debug_str:000000000000058f .LASF118
+     /tmp/ccPAOpUK.s:3876   .debug_str:00000000000008fd .LASF119
+     /tmp/ccPAOpUK.s:3736   .debug_str:0000000000000476 .LASF120
+     /tmp/ccPAOpUK.s:3752   .debug_str:00000000000004e8 .LASF121
+     /tmp/ccPAOpUK.s:3730   .debug_str:000000000000043c .LASF122
+     /tmp/ccPAOpUK.s:3824   .debug_str:00000000000006e1 .LASF123
+     /tmp/ccPAOpUK.s:3656   .debug_str:00000000000001e4 .LASF124
+     /tmp/ccPAOpUK.s:3700   .debug_str:0000000000000353 .LASF125
+     /tmp/ccPAOpUK.s:3668   .debug_str:000000000000024f .LASF126
+     /tmp/ccPAOpUK.s:3598   .debug_str:000000000000001c .LASF127
+     /tmp/ccPAOpUK.s:3628   .debug_str:00000000000000f8 .LASF128
+     /tmp/ccPAOpUK.s:3798   .debug_str:0000000000000627 .LASF129
+     /tmp/ccPAOpUK.s:3856   .debug_str:00000000000007d2 .LASF130
+     /tmp/ccPAOpUK.s:3756   .debug_str:000000000000050f .LASF131
+     /tmp/ccPAOpUK.s:3676   .debug_str:00000000000002a6 .LASF132
+     /tmp/ccPAOpUK.s:3882   .debug_str:000000000000091f .LASF133
+     /tmp/ccPAOpUK.s:3748   .debug_str:00000000000004c9 .LASF134
+GAS LISTING /tmp/ccPAOpUK.s 			page 20
+
+
+     /tmp/ccPAOpUK.s:3724   .debug_str:0000000000000412 .LASF135
+     /tmp/ccPAOpUK.s:3892   .debug_str:000000000000095c .LASF136
+     /tmp/ccPAOpUK.s:3792   .debug_str:0000000000000603 .LASF137
+     /tmp/ccPAOpUK.s:3896   .debug_str:000000000000097f .LASF138
+     /tmp/ccPAOpUK.s:3694   .debug_str:0000000000000328 .LASF139
+     /tmp/ccPAOpUK.s:3750   .debug_str:00000000000004d7 .LASF140
+     /tmp/ccPAOpUK.s:3688   .debug_str:00000000000002fe .LASF141
+     /tmp/ccPAOpUK.s:3646   .debug_str:0000000000000198 .LASF142
+     /tmp/ccPAOpUK.s:3708   .debug_str:000000000000038a .LASF143
+     /tmp/ccPAOpUK.s:3704   .debug_str:0000000000000366 .LASF161
+     /tmp/ccPAOpUK.s:3754   .debug_str:00000000000004fd .LASF162
+     /tmp/ccPAOpUK.s:3888   .debug_str:0000000000000950 .LASF144
+     /tmp/ccPAOpUK.s:3698   .debug_str:000000000000033e .LASF145
+     /tmp/ccPAOpUK.s:3678   .debug_str:00000000000002ad .LASF146
+     /tmp/ccPAOpUK.s:3618   .debug_str:00000000000000b1 .LASF163
+     /tmp/ccPAOpUK.s:430    .text:000000000000025c .LFB65
+     /tmp/ccPAOpUK.s:511    .text:00000000000002e4 .LFE65
+     /tmp/ccPAOpUK.s:3298   .debug_loc:0000000000000000 .LLST23
+     /tmp/ccPAOpUK.s:3320   .debug_loc:000000000000005f .LLST24
+     /tmp/ccPAOpUK.s:453    .text:0000000000000284 .LVL50
+     /tmp/ccPAOpUK.s:458    .text:0000000000000290 .LVL51
+     /tmp/ccPAOpUK.s:475    .text:00000000000002ac .LVL53
+     /tmp/ccPAOpUK.s:480    .text:00000000000002b8 .LVL54
+     /tmp/ccPAOpUK.s:349    .text:00000000000001d4 .LFB64
+     /tmp/ccPAOpUK.s:424    .text:000000000000025c .LFE64
+     /tmp/ccPAOpUK.s:3327   .debug_loc:0000000000000082 .LLST21
+     /tmp/ccPAOpUK.s:3345   .debug_loc:00000000000000ce .LLST22
+     /tmp/ccPAOpUK.s:371    .text:00000000000001fc .LVL41
+     /tmp/ccPAOpUK.s:376    .text:0000000000000208 .LVL42
+     /tmp/ccPAOpUK.s:400    .text:0000000000000234 .LVL44
+     /tmp/ccPAOpUK.s:405    .text:0000000000000240 .LVL45
+     /tmp/ccPAOpUK.s:270    .text:0000000000000148 .LFB63
+     /tmp/ccPAOpUK.s:343    .text:00000000000001d4 .LFE63
+     /tmp/ccPAOpUK.s:3356   .debug_loc:0000000000000104 .LLST19
+     /tmp/ccPAOpUK.s:3374   .debug_loc:0000000000000150 .LLST20
+     /tmp/ccPAOpUK.s:293    .text:0000000000000174 .LVL34
+     /tmp/ccPAOpUK.s:298    .text:0000000000000180 .LVL35
+     /tmp/ccPAOpUK.s:322    .text:00000000000001b0 .LVL36
+     /tmp/ccPAOpUK.s:327    .text:00000000000001bc .LVL37
+     /tmp/ccPAOpUK.s:3606   .debug_str:0000000000000072 .LASF147
+     /tmp/ccPAOpUK.s:3820   .debug_str:00000000000006c0 .LASF148
+     /tmp/ccPAOpUK.s:196    .text:00000000000000e0 .LFB61
+     /tmp/ccPAOpUK.s:254    .text:0000000000000148 .LFE61
+     /tmp/ccPAOpUK.s:3388   .debug_loc:0000000000000189 .LLST18
+     /tmp/ccPAOpUK.s:219    .text:0000000000000104 .LVL26
+     /tmp/ccPAOpUK.s:224    .text:0000000000000110 .LVL27
+     /tmp/ccPAOpUK.s:229    .text:000000000000011c .LVL28
+     /tmp/ccPAOpUK.s:234    .text:0000000000000128 .LVL29
+     /tmp/ccPAOpUK.s:239    .text:0000000000000134 .LVL30
+     /tmp/ccPAOpUK.s:3862   .debug_str:00000000000007ea .LASF150
+     /tmp/ccPAOpUK.s:3872   .debug_str:00000000000008e3 .LASF149
+     /tmp/ccPAOpUK.s:10     .text:0000000000000000 .LFB58
+     /tmp/ccPAOpUK.s:188    .text:00000000000000e0 .LFE58
+     /tmp/ccPAOpUK.s:3406   .debug_loc:00000000000001d5 .LLST0
+     /tmp/ccPAOpUK.s:3424   .debug_loc:0000000000000221 .LLST1
+     /tmp/ccPAOpUK.s:47     .text:0000000000000044 .LBB40
+     /tmp/ccPAOpUK.s:56     .text:0000000000000050 .LBE40
+GAS LISTING /tmp/ccPAOpUK.s 			page 21
+
+
+     /tmp/ccPAOpUK.s:3438   .debug_loc:000000000000025a .LLST2
+     /tmp/ccPAOpUK.s:54     .text:0000000000000050 .LVL4
+     /tmp/ccPAOpUK.s:57     .text:0000000000000050 .LBB42
+     /tmp/ccPAOpUK.s:75     .text:0000000000000060 .LBE42
+     /tmp/ccPAOpUK.s:3447   .debug_loc:000000000000027f .LLST3
+     /tmp/ccPAOpUK.s:3455   .debug_loc:00000000000002a3 .LLST4
+     /tmp/ccPAOpUK.s:62     .text:0000000000000054 .LBB44
+     /tmp/ccPAOpUK.s:70     .text:000000000000005c .LBE44
+     /tmp/ccPAOpUK.s:3462   .debug_loc:00000000000002c6 .LLST5
+     /tmp/ccPAOpUK.s:80     .text:0000000000000064 .LBB46
+     /tmp/ccPAOpUK.s:88     .text:0000000000000070 .LBE46
+     /tmp/ccPAOpUK.s:3471   .debug_loc:00000000000002eb .LLST6
+     /tmp/ccPAOpUK.s:86     .text:0000000000000070 .LVL9
+     /tmp/ccPAOpUK.s:89     .text:0000000000000070 .LBB48
+     /tmp/ccPAOpUK.s:106    .text:0000000000000080 .LBE48
+     /tmp/ccPAOpUK.s:3480   .debug_loc:0000000000000310 .LLST7
+     /tmp/ccPAOpUK.s:3495   .debug_loc:000000000000033b .LLST8
+     /tmp/ccPAOpUK.s:94     .text:0000000000000074 .LBB50
+     /tmp/ccPAOpUK.s:101    .text:000000000000007c .LBE50
+     /tmp/ccPAOpUK.s:3502   .debug_loc:000000000000035e .LLST9
+     /tmp/ccPAOpUK.s:111    .text:0000000000000084 .LBB52
+     /tmp/ccPAOpUK.s:119    .text:0000000000000090 .LBE52
+     /tmp/ccPAOpUK.s:3511   .debug_loc:0000000000000383 .LLST10
+     /tmp/ccPAOpUK.s:117    .text:0000000000000090 .LVL14
+     /tmp/ccPAOpUK.s:120    .text:0000000000000090 .LBB54
+     /tmp/ccPAOpUK.s:138    .text:00000000000000a4 .LBE54
+     /tmp/ccPAOpUK.s:3520   .debug_loc:00000000000003a8 .LLST11
+     /tmp/ccPAOpUK.s:3528   .debug_loc:00000000000003cc .LLST12
+     /tmp/ccPAOpUK.s:126    .text:0000000000000098 .LBB56
+     /tmp/ccPAOpUK.s:133    .text:00000000000000a0 .LBE56
+     /tmp/ccPAOpUK.s:3535   .debug_loc:00000000000003ef .LLST13
+     /tmp/ccPAOpUK.s:143    .text:00000000000000a8 .LBB58
+     /tmp/ccPAOpUK.s:151    .text:00000000000000b4 .LBE58
+     /tmp/ccPAOpUK.s:3544   .debug_loc:0000000000000414 .LLST14
+     /tmp/ccPAOpUK.s:149    .text:00000000000000b4 .LVL19
+     /tmp/ccPAOpUK.s:152    .text:00000000000000b4 .LBB60
+     /tmp/ccPAOpUK.s:169    .text:00000000000000c4 .LBE60
+     /tmp/ccPAOpUK.s:3553   .debug_loc:0000000000000439 .LLST15
+     /tmp/ccPAOpUK.s:3561   .debug_loc:000000000000045d .LLST16
+     /tmp/ccPAOpUK.s:157    .text:00000000000000b8 .LBB62
+     /tmp/ccPAOpUK.s:164    .text:00000000000000c0 .LBE62
+     /tmp/ccPAOpUK.s:3568   .debug_loc:0000000000000480 .LLST17
+     /tmp/ccPAOpUK.s:42     .text:0000000000000040 .LVL2
+     /tmp/ccPAOpUK.s:3800   .debug_str:000000000000062c .LASF164
+     /tmp/ccPAOpUK.s:433    .text:000000000000025c .LVL48
+     /tmp/ccPAOpUK.s:451    .text:000000000000027c .LVL49
+     /tmp/ccPAOpUK.s:492    .text:00000000000002c8 .LVL55
+     /tmp/ccPAOpUK.s:499    .text:00000000000002d4 .LVL57
+     /tmp/ccPAOpUK.s:469    .text:00000000000002a0 .LVL52
+     /tmp/ccPAOpUK.s:495    .text:00000000000002cc .LVL56
+     /tmp/ccPAOpUK.s:352    .text:00000000000001d4 .LVL39
+     /tmp/ccPAOpUK.s:369    .text:00000000000001f4 .LVL40
+     /tmp/ccPAOpUK.s:416    .text:0000000000000250 .LVL46
+     /tmp/ccPAOpUK.s:386    .text:0000000000000218 .LVL43
+     /tmp/ccPAOpUK.s:419    .text:0000000000000254 .LVL47
+     /tmp/ccPAOpUK.s:273    .text:0000000000000148 .LVL32
+     /tmp/ccPAOpUK.s:291    .text:000000000000016c .LVL33
+GAS LISTING /tmp/ccPAOpUK.s 			page 22
+
+
+     /tmp/ccPAOpUK.s:336    .text:00000000000001c8 .LVL38
+     /tmp/ccPAOpUK.s:201    .text:00000000000000e0 .LVL24
+     /tmp/ccPAOpUK.s:217    .text:00000000000000fc .LVL25
+     /tmp/ccPAOpUK.s:249    .text:0000000000000140 .LVL31
+     /tmp/ccPAOpUK.s:14     .text:0000000000000000 .LVL0
+     /tmp/ccPAOpUK.s:33     .text:0000000000000028 .LVL1
+     /tmp/ccPAOpUK.s:181    .text:00000000000000d4 .LVL23
+     /tmp/ccPAOpUK.s:46     .text:0000000000000044 .LVL3
+     /tmp/ccPAOpUK.s:73     .text:0000000000000060 .LVL7
+     /tmp/ccPAOpUK.s:61     .text:0000000000000054 .LVL5
+     /tmp/ccPAOpUK.s:68     .text:000000000000005c .LVL6
+     /tmp/ccPAOpUK.s:79     .text:0000000000000064 .LVL8
+     /tmp/ccPAOpUK.s:104    .text:0000000000000080 .LVL12
+     /tmp/ccPAOpUK.s:93     .text:0000000000000074 .LVL10
+     /tmp/ccPAOpUK.s:99     .text:000000000000007c .LVL11
+     /tmp/ccPAOpUK.s:110    .text:0000000000000084 .LVL13
+     /tmp/ccPAOpUK.s:136    .text:00000000000000a4 .LVL17
+     /tmp/ccPAOpUK.s:125    .text:0000000000000098 .LVL15
+     /tmp/ccPAOpUK.s:131    .text:00000000000000a0 .LVL16
+     /tmp/ccPAOpUK.s:142    .text:00000000000000a8 .LVL18
+     /tmp/ccPAOpUK.s:167    .text:00000000000000c4 .LVL22
+     /tmp/ccPAOpUK.s:156    .text:00000000000000b8 .LVL20
+     /tmp/ccPAOpUK.s:162    .text:00000000000000c0 .LVL21
+     /tmp/ccPAOpUK.s:520    .debug_info:0000000000000000 .Ldebug_info0
+     /tmp/ccPAOpUK.s:257    .gcc_except_table:0000000000000000 .LLSDA61
+
+UNDEFINED SYMBOLS
+_ZN9Allocator7_mallocEm
+_ZN9Allocator9_mem_freeEPv
+_ZN10kSemaphore8closeSemEv
+__gxx_personality_v0
+_ZN10kSemaphore4waitEv
+_ZN10kSemaphore6signalEv

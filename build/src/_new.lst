@@ -1,0 +1,43 @@
+GAS LISTING /tmp/ccPf3c0x.s 			page 1
+
+
+   1              		.file	"_new.cpp"
+   2              		.option pic
+   3              		.option norelax
+   4              		.text
+   5              	.Ltext0:
+   6              	.Letext0:
+   7              		.file 1 "src/../h/../lib/hw.h"
+   8              		.file 2 "src/../h/../h/tipovi.hpp"
+GAS LISTING /tmp/ccPf3c0x.s 			page 2
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 _new.cpp
+     /tmp/ccPf3c0x.s:152    .debug_abbrev:0000000000000000 .Ldebug_abbrev0
+     /tmp/ccPf3c0x.s:338    .debug_str:00000000000000c4 .LASF19
+     /tmp/ccPf3c0x.s:352    .debug_str:00000000000001ed .LASF20
+     /tmp/ccPf3c0x.s:322    .debug_str:0000000000000059 .LASF21
+     /tmp/ccPf3c0x.s:308    .debug_line:0000000000000000 .Ldebug_line0
+     /tmp/ccPf3c0x.s:350    .debug_str:00000000000001e0 .LASF0
+     /tmp/ccPf3c0x.s:310    .debug_str:0000000000000000 .LASF1
+     /tmp/ccPf3c0x.s:332    .debug_str:000000000000009b .LASF2
+     /tmp/ccPf3c0x.s:326    .debug_str:0000000000000083 .LASF4
+     /tmp/ccPf3c0x.s:320    .debug_str:0000000000000047 .LASF3
+     /tmp/ccPf3c0x.s:312    .debug_str:0000000000000013 .LASF5
+     /tmp/ccPf3c0x.s:324    .debug_str:0000000000000070 .LASF6
+     /tmp/ccPf3c0x.s:340    .debug_str:0000000000000188 .LASF7
+     /tmp/ccPf3c0x.s:348    .debug_str:00000000000001d0 .LASF8
+     /tmp/ccPf3c0x.s:314    .debug_str:000000000000001a .LASF9
+     /tmp/ccPf3c0x.s:316    .debug_str:0000000000000028 .LASF10
+     /tmp/ccPf3c0x.s:346    .debug_str:00000000000001c1 .LASF11
+     /tmp/ccPf3c0x.s:318    .debug_str:0000000000000037 .LASF12
+     /tmp/ccPf3c0x.s:344    .debug_str:00000000000001b1 .LASF13
+     /tmp/ccPf3c0x.s:330    .debug_str:000000000000008f .LASF14
+     /tmp/ccPf3c0x.s:342    .debug_str:000000000000019b .LASF15
+     /tmp/ccPf3c0x.s:336    .debug_str:00000000000000ae .LASF16
+     /tmp/ccPf3c0x.s:328    .debug_str:000000000000008a .LASF17
+     /tmp/ccPf3c0x.s:334    .debug_str:00000000000000a9 .LASF18
+     /tmp/ccPf3c0x.s:10     .debug_info:0000000000000000 .Ldebug_info0
+
+NO UNDEFINED SYMBOLS
